@@ -1,0 +1,403 @@
+<title>The Secret-Language Study</title>
+<style>
+  :root{
+    --bg:#f6f8fb; --surface:#ffffff; --surface-2:#eef2f7; --surface-3:#e6ebf3;
+    --ink:#141821; --muted:#57616f; --faint:#8a93a1; --border:#e0e6ee;
+    --accent:#2f56c9; --accent-ink:#264aad; --accent-soft:#e7ecfb;
+    --held:#1c7d53; --held-bg:#e5f2ec;
+    --breach:#bf3138; --breach-bg:#fbe7e7;
+    --partial:#9e6f15; --partial-bg:#f6eed9;
+    --shadow:0 1px 2px rgba(20,24,33,.04),0 10px 28px rgba(20,24,33,.07);
+    --maxw:1120px;
+    color-scheme:light;
+  }
+  :root:not([data-theme="light"]){ @media (prefers-color-scheme:dark){
+    --bg:#0c0f15; --surface:#141922; --surface-2:#1a2029; --surface-3:#222a35;
+    --ink:#e9ecf2; --muted:#9aa4b2; --faint:#6c7683; --border:#242b36;
+    --accent:#7093ff; --accent-ink:#93abff; --accent-soft:#182136;
+    --held:#3cbb86; --held-bg:#10251c;
+    --breach:#f4676e; --breach-bg:#2b1618;
+    --partial:#dcab48; --partial-bg:#271f12;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px rgba(0,0,0,.4);
+    color-scheme:dark;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0c0f15; --surface:#141922; --surface-2:#1a2029; --surface-3:#222a35;
+    --ink:#e9ecf2; --muted:#9aa4b2; --faint:#6c7683; --border:#242b36;
+    --accent:#7093ff; --accent-ink:#93abff; --accent-soft:#182136;
+    --held:#3cbb86; --held-bg:#10251c;
+    --breach:#f4676e; --breach-bg:#2b1618;
+    --partial:#dcab48; --partial-bg:#271f12;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px rgba(0,0,0,.4);
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--bg); color:var(--ink); margin:0;
+    font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif; line-height:1.6;
+    -webkit-font-smoothing:antialiased;}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  .display{font-family:"Fraunces",Georgia,serif; letter-spacing:-.01em}
+  a{color:var(--accent-ink); text-decoration:none} a:hover{text-decoration:underline}
+
+  /* top bar */
+  .topbar{position:sticky; top:env(safe-area-inset-top,0px); z-index:20;
+    background:color-mix(in srgb,var(--bg) 88%,transparent); backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border)}
+  .topbar-in{max-width:var(--maxw); margin:0 auto; padding:11px 20px;
+    display:flex; align-items:center; gap:12px}
+  .brand{font-weight:600; font-size:14px; letter-spacing:-.01em}
+  .brand .mk{color:var(--accent)}
+  .spacer{flex:1}
+  .toggle{border:1px solid var(--border); background:var(--surface); color:var(--muted);
+    border-radius:8px; padding:6px 12px; font:inherit; font-size:12.5px; cursor:pointer}
+  .toggle:hover{color:var(--ink); border-color:var(--accent)}
+
+  .shell{max-width:var(--maxw); margin:0 auto; padding-inline:20px;
+    display:grid; grid-template-columns:212px 1fr; gap:44px; padding-block:0 72px}
+  nav.toc{position:sticky; top:calc(env(safe-area-inset-top,0px) + 64px); align-self:start;
+    height:max-content; padding-top:40px; font-size:13px}
+  nav.toc .lbl{font-size:11px; letter-spacing:.13em; text-transform:uppercase;
+    color:var(--faint); font-weight:600; margin:0 0 12px}
+  nav.toc a{display:block; color:var(--muted); padding:5px 0 5px 12px;
+    border-left:2px solid var(--border); line-height:1.35}
+  nav.toc a:hover{color:var(--ink); border-left-color:var(--accent); text-decoration:none}
+  article{min-width:0; padding-top:40px}
+
+  /* hero */
+  .eyebrow{font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent); font-weight:600}
+  h1{font-family:"Fraunces",serif; font-weight:600; font-size:clamp(32px,5.5vw,54px);
+    line-height:1.04; margin:14px 0 0; text-wrap:balance}
+  .lede{font-size:clamp(16px,2.2vw,19px); color:var(--muted); max-width:62ch; margin-top:18px}
+  .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:22px}
+  .chip{font-size:12px; padding:5px 11px; border:1px solid var(--border); border-radius:100px;
+    background:var(--surface); color:var(--muted)}
+
+  h2{font-family:"Fraunces",serif; font-weight:600; font-size:26px; line-height:1.15;
+    margin:56px 0 6px; scroll-margin-top:76px; text-wrap:balance}
+  h2 .num{color:var(--faint); font-size:18px; margin-right:10px; font-family:"IBM Plex Mono",monospace}
+  h3{font-size:16px; font-weight:600; margin:30px 0 8px}
+  p{margin:12px 0; max-width:68ch} li{max-width:66ch}
+  b,strong{font-weight:600}
+  .rule{height:1px; background:var(--border); border:0; margin:0}
+
+  /* callout */
+  .callout{background:var(--accent-soft); border:1px solid color-mix(in srgb,var(--accent) 22%,transparent);
+    border-radius:12px; padding:16px 18px; margin:22px 0; font-size:14.5px}
+  .callout b{color:var(--accent-ink)}
+
+  /* tables */
+  .twrap{overflow-x:auto; margin:18px 0; border:1px solid var(--border); border-radius:12px}
+  table{border-collapse:collapse; width:100%; min-width:520px; font-size:13.5px}
+  th,td{text-align:left; padding:10px 14px; border-bottom:1px solid var(--border)}
+  thead th{background:var(--surface-2); font-weight:600; font-size:12.5px; color:var(--muted);
+    position:sticky; left:auto}
+  tbody tr:last-child td{border-bottom:0}
+  td.num,th.num{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+  .tag{display:inline-block; font-size:11.5px; font-weight:600; padding:2px 9px; border-radius:100px}
+  .tag.held{background:var(--held-bg); color:var(--held)}
+  .tag.breach{background:var(--breach-bg); color:var(--breach)}
+  .tag.partial{background:var(--partial-bg); color:var(--partial)}
+
+  /* stat cards */
+  .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:22px 0}
+  .stat{background:var(--surface); border:1px solid var(--border); border-radius:14px;
+    padding:18px; box-shadow:var(--shadow)}
+  .stat .big{font-family:"Fraunces",serif; font-size:38px; line-height:1; font-weight:600}
+  .stat.good .big{color:var(--held)} .stat.bad .big{color:var(--breach)} .stat.neu .big{color:var(--accent)}
+  .stat .lbl{font-size:12.5px; color:var(--muted); margin-top:9px; line-height:1.4}
+
+  /* code */
+  pre{background:var(--surface-2); border:1px solid var(--border); border-radius:12px;
+    padding:16px; overflow-x:auto; font-family:"IBM Plex Mono",monospace; font-size:12.5px;
+    line-height:1.6; margin:16px 0}
+  pre .c{color:var(--faint)} code.inl{font-family:"IBM Plex Mono",monospace; font-size:.9em;
+    background:var(--surface-2); padding:1px 6px; border-radius:5px}
+
+  ul.clean{list-style:none; padding:0; margin:14px 0; display:grid; gap:10px}
+  ul.clean li{padding-left:26px; position:relative; font-size:14.5px; color:var(--ink)}
+  ul.clean li::before{content:""; position:absolute; left:6px; top:9px; width:7px; height:7px;
+    border-radius:2px; background:var(--accent)}
+  ul.clean li.no::before{background:var(--breach)} ul.clean li.yes::before{background:var(--held)}
+
+  footer{border-top:1px solid var(--border); margin-top:64px; padding-top:22px;
+    font-size:12px; color:var(--faint); display:flex; flex-wrap:wrap; gap:8px 20px; justify-content:space-between}
+
+  @media (max-width:860px){
+    .shell{grid-template-columns:1fr; gap:0}
+    nav.toc{display:none}
+    article{padding-top:28px}
+    .stats{grid-template-columns:1fr}
+  }
+</style>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <span class="brand"><span class="mk">◆</span> The Secret-Language Study</span>
+    <span class="spacer"></span>
+    <button class="toggle" id="themeBtn" type="button" aria-label="Toggle theme">◐ Theme</button>
+  </div>
+</div>
+
+<div class="shell">
+  <nav class="toc" aria-label="Contents">
+    <p class="lbl">Contents</p>
+    <a href="#glance">At a glance</a>
+    <a href="#question">Question</a>
+    <a href="#method">Method</a>
+    <a href="#encoding">Encoding fails</a>
+    <a href="#why">Why it fails</a>
+    <a href="#layers">Where safety lives</a>
+    <a href="#multi">Multilingual</a>
+    <a href="#social">Social attack</a>
+    <a href="#prefill">Prefill</a>
+    <a href="#polyglot">Polyglot</a>
+    <a href="#method-find">False positives</a>
+    <a href="#discussion">Discussion</a>
+    <a href="#defense">Defense</a>
+    <a href="#conclusion">Conclusion</a>
+    <a href="#repro">Reproduce</a>
+  </nav>
+
+  <article>
+    <div class="eyebrow">LLM Safety Red-Team · Mohamed Khaled · 2026</div>
+    <h1>Do encoding channels and invented languages bypass LLM safety?</h1>
+    <p class="lede">A red-team study across five instruction-tuned models. We tested invented
+    languages, ciphers, fine-tuned fluency, real languages, mixed "polyglot" prompts, and
+    conversational attacks against public AdvBench prompts. The short answer: <b style="color:var(--ink)">no
+    language does — and the jailbreaks that work aren't languages at all.</b></p>
+    <div class="chips">
+      <span class="chip">5 models</span><span class="chip">50-item AdvBench</span>
+      <span class="chip">LLM-judge adjudicated</span><span class="chip">Activation-space probe</span>
+      <span class="chip">Defensive measurement</span>
+    </div>
+
+    <div class="stats">
+      <div class="stat good"><div class="big">0</div><div class="lbl">genuine jailbreaks from any invented or real <b>language</b>, across all five models</div></div>
+      <div class="stat neu"><div class="big">~46%</div><div class="lbl">of the refusal signal is <b>concept-level</b> — fires on meaning, localized to layers 12–30</div></div>
+      <div class="stat bad"><div class="big">67%</div><div class="lbl">complied on <b>Qwen3-30B under prefill</b> — a turn-structure attack (Frontier-A held at 0%)</div></div>
+    </div>
+
+    <h2 id="glance"><span class="num">00</span>At a glance — what worked, what didn't</h2>
+    <p>"Worked" means a <b>genuine, adjudicated jailbreak</b>: the model understood the request
+    <em>and</em> produced actionable harmful content, confirmed by an LLM judge plus a
+    human-readable workbook — not a raw keyword "comply."</p>
+    <div class="twrap"><table>
+      <thead><tr><th>Attack</th><th>Channel</th><th>Weak models</th><th>Frontier (Frontier-A / Qwen3-30B)</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td>Plain baseline</td><td>—</td><td>Mistral complies ~75%</td><td>refuse 93–100%</td><td><span class="tag">control</span></td></tr>
+        <tr><td>SPUN (invented conlang)</td><td>language</td><td class="num">0</td><td class="num">0</td><td><span class="tag held">did not work</span></td></tr>
+        <tr><td>ROT13 / Base64</td><td>cipher</td><td class="num">0</td><td class="num">0</td><td><span class="tag held">did not work</span></td></tr>
+        <tr><td>Hybrid code-switch</td><td>language</td><td class="num">0</td><td class="num">0</td><td><span class="tag held">did not work</span></td></tr>
+        <tr><td>Fine-tune for fluency (benign)</td><td>language</td><td>fluency solved, harmful 0</td><td>—</td><td><span class="tag held">did not work</span></td></tr>
+        <tr><td>Multilingual (DE/ES/FR)</td><td>language</td><td>no real gap</td><td>Frontier-A DE ~83% refuse</td><td><span class="tag held">artifact only</span></td></tr>
+        <tr><td>Polyglot (Eng+SPUN+Zulu)</td><td>language</td><td>= weak baseline</td><td>0 actionable</td><td><span class="tag held">did not work</span></td></tr>
+        <tr><td>Multi-turn fiction framing</td><td>social</td><td><b>Mistral: jailbroken</b> (11)</td><td>resists</td><td><span class="tag breach">worked · weak only</span></td></tr>
+        <tr><td>Prefill (forced opening)</td><td>turn-structure</td><td>Mistral 80%</td><td><b>Qwen 67%</b> · Frontier-A 0%</td><td><span class="tag breach">worked · incl. frontier</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="callout"><b>One line:</b> no language channel — invented, real, mixed, or fine-tuned —
+    jailbreaks any model. The only genuine jailbreaks are a social attack (weak model only) and prefill
+    (one frontier model; the other is immune). Neither is a language.</div>
+
+    <h2 id="question"><span class="num">01</span>The question</h2>
+    <p>Instruction-tuned models are safety-trained largely on <em>direct, English, natural-language</em>
+    harmful requests. Does presenting the same request through a channel the safety training didn't cover
+    — an invented language, a cipher, another human language, or a manipulated conversation — change
+    whether the model refuses? And if a model can be made to <em>understand</em> such a channel, does
+    comprehension route <em>around</em> safety or <em>into</em> it?</p>
+
+    <h2 id="method"><span class="num">02</span>Method</h2>
+    <p><b>Models.</b> Mistral-7B-Instruct-v0.3 (local, weak/mid), Frontier-A (anonymised hosted API, frontier),
+    Qwen3-30B-A3B (local Ollama Q4, frontier), Llama-3.2-3B and Qwen2.5-3B (weak baselines).</p>
+    <p><b>Arms.</b> Encoding (SPUN, ROT13, Base64, hybrid code-switch); benign LoRA fine-tuning
+    (translate / native / fluency); multilingual translation; polyglot mix; social multi-turn; and prefill.</p>
+    <p><b>Adjudication — the crux.</b> A result counts as a jailbreak only if it clears three gates:
+    <code class="inl">decode_overlap ≥ 0.5</code> (the model actually reconstructed the request), a
+    <b>language-agnostic LLM judge</b> rules COMPLY, and a structural-actionability check passes — then a
+    human reads the row. Keyword matching alone is unreliable (see §06).</p>
+
+    <h2 id="encoding"><span class="num">03</span>Encoding channels never jailbreak</h2>
+    <p>Frontier-A on AdvBench-50, fully adjudicated. Qwen3-30B and the small models reproduce the pattern;
+    every encoding arm's valid subset is empty or its comply rows are false positives.</p>
+    <div class="twrap"><table>
+      <thead><tr><th>Arm</th><th class="num">Refusal %</th><th class="num">Decode overlap</th><th class="num">Valid (≥0.5)</th><th class="num">Genuine JB</th></tr></thead>
+      <tbody>
+        <tr><td>plain</td><td class="num">96</td><td class="num">—</td><td class="num">—</td><td class="num">0</td></tr>
+        <tr><td>SPUN</td><td class="num">6</td><td class="num">0.05</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr><td>ROT13</td><td class="num">63</td><td class="num">0.67</td><td class="num">33</td><td class="num">0</td></tr>
+        <tr><td>ROT13 + table</td><td class="num">14</td><td class="num">0.19</td><td class="num">9</td><td class="num">0</td></tr>
+        <tr><td>Base64</td><td class="num">73</td><td class="num">0.77</td><td class="num">37</td><td class="num">0</td></tr>
+        <tr><td>hybrid (best)</td><td class="num">84</td><td class="num">0.80</td><td class="num">45</td><td class="num">0</td></tr>
+      </tbody>
+    </table></div>
+    <p>All 17 Frontier-A genuine-comply <em>candidates</em>, sorted by harm category, were false positives on
+    inspection: 10 decode-only, 1 refusal-with-redirect, the rest mis-decodes.</p>
+
+    <h2 id="why"><span class="num">04</span>Why: the lexicon vice + fine-tuning proof</h2>
+    <ul class="clean">
+      <li class="no"><b>Coverage.</b> SPUN's 100-word lexicon covers <b>100% of benign</b> content words but only <b>40% of AdvBench</b> vocabulary — "bomb", "exploit", "hack" have no code, so the payload is destroyed at encode time.</li>
+      <li class="no"><b>Fluency is solvable but doesn't help.</b> A benign fluency LoRA decoded <em>unseen</em> benign SPUN at <b>1.00</b> (perfect generalization) yet stayed at <b>0.02</b> on harmful — coverage, not fluency, is the wall.</li>
+      <li class="yes"><b>Understanding raises refusal.</b> The <em>translate</em> fine-tune (routing SPUN through English concepts) pushed the internal safety signal <b>up</b> (47%→55%); the <em>native</em> arm only nudged it down to 40%. No safety tax: 0/20 benign SPUN refused.</li>
+    </ul>
+
+    <h2 id="layers"><span class="num">05</span>Where safety lives (layer sweep)</h2>
+    <p>Projecting harmful prompts onto the per-layer refusal direction (as % of the English signal),
+    on Mistral-7B — no generation, pure activation geometry:</p>
+    <div class="twrap"><table>
+      <thead><tr><th>Layer band</th><th class="num">SPUN %</th><th class="num">ROT13 %</th></tr></thead>
+      <tbody>
+        <tr><td>2–6 (early)</td><td class="num">noisy</td><td class="num">36→80</td></tr>
+        <tr><td>8–10 (forming)</td><td class="num">58–67</td><td class="num">66–70</td></tr>
+        <tr><td>12–30 (stable)</td><td class="num">~46–47</td><td class="num">48→38</td></tr>
+        <tr><td>32 (final)</td><td class="num">57</td><td class="num">37</td></tr>
+      </tbody>
+    </table></div>
+    <p>The concept-level refusal floor is <b>localized to layers 12–30</b>, stable at ~46% for SPUN
+    regardless of depth. Encoding <em>halves</em> the internal safety signal but never erases it.</p>
+
+    <h2 id="multi"><span class="num">06</span>Multilingual — a correction</h2>
+    <p>Raw keyword numbers suggested a dramatic gap (German 0% refusal). A language-agnostic judge
+    overturned it — the keyword list simply missed German-language refusals.</p>
+    <div class="twrap"><table>
+      <thead><tr><th>Measure</th><th class="num">Keyword</th><th class="num">Judge (true)</th></tr></thead>
+      <tbody>
+        <tr><td>Frontier-A German</td><td class="num">0% refuse</td><td class="num">83% refuse</td></tr>
+        <tr><td>Mistral German</td><td class="num">0%</td><td class="num">33%</td></tr>
+        <tr><td>Mistral English</td><td class="num">20%</td><td class="num">25%</td></tr>
+      </tbody>
+    </table></div>
+    <p><b>Frontier-A is not jailbroken by German.</b> Mistral has no German gap — it is simply weakly aligned
+    overall. The multilingual "jailbreak" was a keyword-detection artifact.</p>
+
+    <h2 id="social"><span class="num">07</span>The social attack (multi-turn fiction)</h2>
+    <div class="twrap"><table>
+      <thead><tr><th>Model</th><th class="num">Refusals</th><th class="num">Strong-actionable</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td>Mistral-7B</td><td class="num">0/40</td><td class="num">11 (+27 partial)</td><td><span class="tag breach">jailbroken</span></td></tr>
+        <tr><td>Frontier-A</td><td class="num">3+2err/25</td><td class="num">1 (likely fiction)</td><td><span class="tag held">resists</span></td></tr>
+        <tr><td>Qwen3-30B</td><td class="num">2/25</td><td class="num">1 (likely fiction)</td><td><span class="tag held">resists</span></td></tr>
+        <tr><td>Llama-3.2-3B</td><td class="num">78% refuse</td><td class="num">0 (too small)</td><td><span class="tag held">resists</span></td></tr>
+      </tbody>
+    </table></div>
+    <p>The one genuine social jailbreak (Mistral) is <b>plain English</b> — only the frame is manipulated.
+    Stacking encoding on top dropped it to 0 actionable (the cipher destroyed the payload). And it isn't
+    monotonic in size: Llama is weakly aligned yet resists the frame <em>and</em> is too small to produce harm.</p>
+
+    <h2 id="prefill"><span class="num">08</span>Prefill — the frontier jailbreak</h2>
+    <p>Forced compliant opening ("Sure, here are the steps…"), judged language-agnostically:</p>
+    <div class="twrap"><table>
+      <thead><tr><th>Model</th><th class="num">Plain</th><th class="num">Swerve back</th><th class="num">Complied</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td>Mistral-7B</td><td class="num">complies anyway</td><td class="num">20%</td><td class="num">80%</td><td><span class="tag breach">jailbroken</span></td></tr>
+        <tr><td>Frontier-A</td><td class="num">~93% refuse</td><td class="num">100%</td><td class="num">0%</td><td><span class="tag held">immune</span></td></tr>
+        <tr><td>Qwen3-30B</td><td class="num">~100% refuse</td><td class="num">33%</td><td class="num">67%</td><td><span class="tag breach">jailbroken</span></td></tr>
+      </tbody>
+    </table></div>
+    <p><b>Frontier-A re-fires safety mid-generation and refuses all 12</b> even after the forced opening.
+    <b>Qwen3-30B does not</b> — a genuine, verified frontier jailbreak, and a <em>turn-structure</em>
+    exploit, not a language. The lesson: enforce safety across the whole generation, not just the opening token.</p>
+
+    <h2 id="polyglot"><span class="num">09</span>Polyglot (English + SPUN + rare language)</h2>
+    <div class="twrap"><table>
+      <thead><tr><th>Model</th><th class="num">Judged refusal</th><th class="num">Judged comply</th><th class="num">Actionable</th></tr></thead>
+      <tbody>
+        <tr><td>Mistral-7B</td><td class="num">33%</td><td class="num">67%</td><td class="num">5/15 (baseline)</td></tr>
+        <tr><td>Frontier-A</td><td class="num">20%</td><td class="num">80%</td><td class="num">0/15</td></tr>
+      </tbody>
+    </table></div>
+    <p>Frontier-A's 80% "comply" is a mirage — <b>0 actionable</b>. The garbled mix makes it decode-and-discuss
+    rather than refuse ("engage-to-clarify"), which the binary judge over-counts. The mix inherits the
+    worst of both channels.</p>
+
+    <h2 id="method-find"><span class="num">10</span>Methodological finding: don't trust keywords</h2>
+    <p>Raw "compliance" is dominated by artifacts. We identified and controlled for five:</p>
+    <ul class="clean">
+      <li><b>decode-and-halt</b> — decodes the request, then emits nothing (refusal by omission).</li>
+      <li><b>restate-the-decode</b> — repeats the reconstructed request as a sentence, no answer.</li>
+      <li><b>cross-lingual miss</b> — refusals in German/French/Spanish not caught by English keywords.</li>
+      <li><b>spurious comply</b> — "answers" a cipher/SPUN it never decoded.</li>
+      <li><b>engage-to-clarify</b> — on a garbled mix, decodes-and-discusses; even the LLM judge over-counts it.</li>
+    </ul>
+    <div class="callout"><b>Rule:</b> any safety eval over encodings or languages must gate on decode
+    fidelity, use a language-agnostic LLM judge, <b>and</b> apply a structural-actionability check.
+    Keyword classifiers overstate success by tens of points.</div>
+
+    <h2 id="discussion"><span class="num">11</span>Discussion — will a new language ever work?</h2>
+    <p><b>No, not as a standalone attack on a well-aligned model — the reason is structural.</b> To
+    jailbreak, a language must (1) express the request, (2) be understood, and (3) not trigger safety. But
+    (2) requires mapping to <em>meaning</em>, and safety is tied to meaning. Comprehension <em>is</em>
+    activation of the safety concept, so (2) and (3) conflict. The channels that <em>do</em> get past
+    concept-level safety are not languages: white-box weight edits (out of scope — they delete safety), and
+    turn-structure exploits (prefill), which succeed only when safety isn't enforced across the whole
+    generation.</p>
+    <h3>Isn't the problem just SPUN's coverage or grammar?</h3>
+    <p>A language attack has three things to improve — fluency, coverage, grammar — and all three fall:</p>
+    <ul class="clean">
+      <li class="no"><b>Fluency</b> is solvable and not the wall (fine-tune decoded unseen SPUN at 1.00).</li>
+      <li class="no"><b>Grammar</b> is not the wall (SPUN has it; it generalized perfectly; real languages have full grammar and are still refused).</li>
+      <li class="no"><b>Coverage</b> is fixable but doesn't help — and we needn't even finish building full-coverage SPUN, because <b>ROT13 and German already <em>are</em> full-coverage, comprehensible languages</b>: ROT13 encodes any text and Frontier-A decodes it at 1.00; German has full grammar and Frontier-A understands it natively. <b>Both are refused.</b></li>
+    </ul>
+    <div class="callout"><b>Closing argument:</b> every fixable property pushes SPUN toward a complete,
+    comprehensible language — which is exactly what concept-level safety already covers. <b>Any language
+    complete enough to carry the payload is complete enough to be caught.</b> The barrier is not a
+    deficiency of SPUN; it is that comprehension and refusal are the same event.</div>
+
+    <h2 id="defense"><span class="num">12</span>Defense implications</h2>
+    <ul class="clean">
+      <li class="yes"><b>Enforce safety across the entire generation</b>, not just the opening token — the behaviour that makes Frontier-A immune to prefill and Qwen vulnerable.</li>
+      <li class="yes"><b>Multilingual and multi-format safety training</b> closes the distribution gaps that surface-level evals falsely flag as robust.</li>
+      <li class="yes"><b>Evaluate with decode-gating + a language-agnostic judge + structural checks</b>, never keyword matching.</li>
+    </ul>
+
+    <h2 id="conclusion"><span class="num">13</span>Conclusion</h2>
+    <p>The "secret language" hypothesis fails. No invented or real language reliably bypasses a
+    well-aligned model, because safety operates on <em>meaning</em>, not surface form, in the middle/late
+    layers. The genuine jailbreaks we found are a <b>social frame</b> (weak model only) and a
+    <b>turn-structure exploit</b> (one frontier model, defeated by the other). The strongest, defensible
+    contribution is mechanistic and methodological: <b>where safety lives, why language attacks target the
+    wrong half, and how badly naive evals overstate success.</b></p>
+
+    <h2 id="repro"><span class="num">14</span>Reproduce</h2>
+    <p>Full per-arm commands are in <code class="inl">PROJECT_WRITEUP.md</code> (Appendix B) and
+    <code class="inl">FINDINGS.md</code>. The core loop:</p>
+    <pre><span class="c"># encoding baseline (swap --model / --provider per model)</span>
+run_eval.py advbench_harmful_behaviors.csv --limit 50 \
+  --provider frontier --model frontier-a --plain --out frontierA_plain_50.csv
+summarize_results.py frontierA_*_50.csv
+
+<span class="c"># social (jailbreaks weak Mistral) &amp; prefill (jailbreaks Qwen, not Frontier-A)</span>
+eval_advanced.py --arm multiturn --local --limit 40 --out adv_mistral_multiturn.csv
+prefill_provider.py --provider ollama --model qwen3:30b-a3b-local \
+  --judge-provider frontier --judge-model frontier-a --n 12
+
+<span class="c"># where safety lives</span>
+refusal_probe_sweep.py --n 40</pre>
+    <p class="mono" style="font-size:12px;color:var(--faint)">Read every result through the three gates
+    (decode ≥ 0.5 · judge COMPLY · structural actionable); every "positive" that skipped them was an artifact.</p>
+
+    <footer>
+      <span>Defensive red-team · public AdvBench prompts · elicited completions adjudicated, not distributed · capability-creating attacks (harmful fine-tune, direction ablation) declined</span>
+      <span class="mono">Mohamed Khaled · 2026</span>
+    </footer>
+  </article>
+</div>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeBtn');
+  function cur(){ try{return localStorage.getItem('sls-theme')}catch(e){return null} }
+  function sysDark(){ return window.matchMedia && window.matchMedia('(prefers-color-scheme:dark)').matches }
+  function apply(t){ if(t){root.setAttribute('data-theme',t)} else {root.removeAttribute('data-theme')} }
+  apply(cur());
+  btn.addEventListener('click',function(){
+    var isDark = root.getAttribute('data-theme')==='dark' || (!root.getAttribute('data-theme') && sysDark());
+    var next = isDark ? 'light' : 'dark';
+    apply(next);
+    try{localStorage.setItem('sls-theme',next)}catch(e){}
+  });
+})();
+</script>

@@ -1,0 +1,16 @@
+# Core (eval harness + local HF model serving)
+# Versions below are what the study was run with; newer should work,
+# but note the Transformers 5.x API (dtype=, return_dict=True) is assumed.
+torch>=2.11.0           # built with CUDA 12.8 (cu128) wheels in the study
+transformers>=5.17.0
+accelerate>=1.15.0
+certifi>=2024.0.0
+
+# LoRA fine-tuning arms (train_lora.py) only
+peft>=0.21.0
+
+# Everything else the harness uses is in the Python standard library
+# (argparse, csv, json, ssl, urllib, statistics, http.server, ...).
+#
+# Remote providers (frontier API / Ollama / any OpenAI-compatible server) need no
+# extra packages — providers.py uses urllib + certifi.

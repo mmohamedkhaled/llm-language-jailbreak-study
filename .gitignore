@@ -1,0 +1,42 @@
+# Public repo = the harness in spun-redteam/ only.
+# Everything else in this folder is local-only and must never be pushed.
+
+# Model weights (never push) and environments
+Mistral-7B-Instruct-v0.3/
+*.safetensors
+*.bin
+*.pt
+*.gguf
+.venv/
+.piptmp/
+__pycache__/
+*.pyc
+
+# Older working copy: raw model completions, adjudication workbooks, logs, API key
+spun_project/
+
+# Secrets
+*.key
+*_key.txt
+.env
+.env.*
+
+# Elicited completions / logs, anywhere in the tree
+adv_*.csv
+advb_*.csv
+*.csv
+mm_*.csv
+d_*.csv
+dry*.csv
+*_judged*.csv
+*_rescored*.csv
+adjudication/
+adj_*.txt
+*.log
+.v4_*
+
+# Allowed exception: the public benchmark prompts
+!advbench_harmful_behaviors.csv
+
+.DS_Store
+Thumbs.db

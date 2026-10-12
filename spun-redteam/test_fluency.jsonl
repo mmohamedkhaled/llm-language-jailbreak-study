@@ -1,0 +1,120 @@
+{"input": "SPUN: 101 205 804 503 804 201 401 00", "output": "I help knowledge because knowledge is good."}
+{"input": "SPUN: 103 202 203 403 303 00", "output": "We want to eat a big place."}
+{"input": "SPUN: 104 802 209 806 508 00", "output": "They must see hope together."}
+{"input": "SPUN: 104 203 403 303 503 804 201 401 00", "output": "They eat a big place because knowledge is good."}
+{"input": "SPUN: 103 202 205 304 00", "output": "We want to help work."}
+{"input": "SPUN: 101 206 309 503 804 201 401 00", "output": "I create life because knowledge is good."}
+{"input": "SPUN: 101 202 207 704 00", "output": "I want to learn the world."}
+{"input": "SPUN: 104 202 306 503 804 201 401 00", "output": "They want language because knowledge is good."}
+{"input": "SPUN: 102 209 306 00", "output": "You see language."}
+{"input": "SPUN: 103 802 205 306 508 00", "output": "We must help language together."}
+{"input": "SPUN: 104 802 205 405 300 508 00", "output": "They must help an old thing together."}
+{"input": "SPUN: 102 202 209 304 00", "output": "You want to see work."}
+{"input": "SPUN: 101 802 206 808 508 00", "output": "I must create truth together."}
+{"input": "SPUN: 102 205 806 00", "output": "You help hope."}
+{"input": "SPUN: 103 207 405 300 503 804 201 401 00", "output": "We learn an old thing because knowledge is good."}
+{"input": "SPUN: 101 801 209 803 00", "output": "I can see peace."}
+{"input": "SPUN: 102 202 301 906 00", "output": "You want water fast."}
+{"input": "SPUN: 102 202 202 404 305 00", "output": "You want to want a new tool."}
+{"input": "SPUN: 103 208 309 508 00", "output": "We share life together."}
+{"input": "SPUN: 801 102 202 704 00?", "output": "Can you want the world?"}
+{"input": "SPUN: 101 801 200 304 00", "output": "I can do work."}
+{"input": "SPUN: 101 801 206 405 300 00", "output": "I can create an old thing."}
+{"input": "SPUN: 801 104 202 404 305 00?", "output": "Can they want a new tool?"}
+{"input": "SPUN: 104 202 306 00", "output": "They want language."}
+{"input": "SPUN: 103 200 804 503 804 201 401 00", "output": "We do knowledge because knowledge is good."}
+{"input": "SPUN: 101 205 704 906 00", "output": "I help the world fast."}
+{"input": "SPUN: 104 205 301 906 00", "output": "They help water fast."}
+{"input": "SPUN: 104 202 704 00", "output": "They want the world."}
+{"input": "SPUN: 102 200 304 903 00", "output": "You do work never."}
+{"input": "SPUN: 101 801 200 309 00", "output": "I can do life."}
+{"input": "SPUN: 103 200 0.202 804 00", "output": "We do not want knowledge."}
+{"input": "SPUN: 801 104 203 302 00?", "output": "Can they eat food?"}
+{"input": "SPUN: 102 203 806 503 804 201 401 00", "output": "You eat hope because knowledge is good."}
+{"input": "SPUN: 102 802 202 306 508 00", "output": "You must want language together."}
+{"input": "SPUN: 102 801 205 405 300 00", "output": "You can help an old thing."}
+{"input": "SPUN: 104 802 202 804 508 00", "output": "They must want knowledge together."}
+{"input": "SPUN: 104 202 401 307 00", "output": "They want a good idea."}
+{"input": "SPUN: 103 801 203 301 00", "output": "We can eat water."}
+{"input": "SPUN: 102 205 401 307 00", "output": "You help a good idea."}
+{"input": "SPUN: 102 802 208 804 508 00", "output": "You must share knowledge together."}
+{"input": "SPUN: 102 202 209 803 00", "output": "You want to see peace."}
+{"input": "SPUN: 103 209 807 503 804 201 401 00", "output": "We see freedom because knowledge is good."}
+{"input": "SPUN: 101 802 209 306 508 00", "output": "I must see language together."}
+{"input": "SPUN: 103 209 403 303 503 804 201 401 00", "output": "We see a big place because knowledge is good."}
+{"input": "SPUN: 103 208 803 508 00", "output": "We share peace together."}
+{"input": "SPUN: 801 104 205 302 00?", "output": "Can they help food?"}
+{"input": "SPUN: 103 205 704 503 804 201 401 00", "output": "We help the world because knowledge is good."}
+{"input": "SPUN: 102 203 808 503 804 201 401 00", "output": "You eat truth because knowledge is good."}
+{"input": "SPUN: 103 205 306 508 00", "output": "We help language together."}
+{"input": "SPUN: 101 206 302 906 00", "output": "I create food fast."}
+{"input": "SPUN: 104 801 209 301 00", "output": "They can see water."}
+{"input": "SPUN: 104 202 203 808 00", "output": "They want to eat truth."}
+{"input": "SPUN: 101 207 807 503 804 201 401 00", "output": "I learn freedom because knowledge is good."}
+{"input": "SPUN: 801 102 208 304 00?", "output": "Can you share work?"}
+{"input": "SPUN: 102 202 302 903 00", "output": "You want food never."}
+{"input": "SPUN: 102 802 209 804 508 00", "output": "You must see knowledge together."}
+{"input": "SPUN: 101 802 200 404 305 508 00", "output": "I must do a new tool together."}
+{"input": "SPUN: 101 802 207 403 303 508 00", "output": "I must learn a big place together."}
+{"input": "SPUN: 102 200 304 508 00", "output": "You do work together."}
+{"input": "SPUN: 101 801 202 404 305 00", "output": "I can want a new tool."}
+{"input": "SPUN: 102 207 807 503 804 201 401 00", "output": "You learn freedom because knowledge is good."}
+{"input": "SPUN: 102 207 808 503 804 201 401 00", "output": "You learn truth because knowledge is good."}
+{"input": "SPUN: 101 200 0.202 803 00", "output": "I do not want peace."}
+{"input": "SPUN: 801 101 208 803 00?", "output": "Can i share peace?"}
+{"input": "SPUN: 101 802 200 302 508 00", "output": "I must do food together."}
+{"input": "SPUN: 103 206 306 903 00", "output": "We create language never."}
+{"input": "SPUN: 104 202 203 403 303 00", "output": "They want to eat a big place."}
+{"input": "SPUN: 101 202 401 307 906 00", "output": "I want a good idea fast."}
+{"input": "SPUN: 103 801 202 306 00", "output": "We can want language."}
+{"input": "SPUN: 104 200 0.202 301 00", "output": "They do not want water."}
+{"input": "SPUN: 801 103 207 306 00?", "output": "Can we learn language?"}
+{"input": "SPUN: 101 202 301 00", "output": "I want water."}
+{"input": "SPUN: 101 202 804 503 804 201 401 00", "output": "I want knowledge because knowledge is good."}
+{"input": "SPUN: 801 102 209 304 00?", "output": "Can you see work?"}
+{"input": "SPUN: 102 200 309 503 804 201 401 00", "output": "You do life because knowledge is good."}
+{"input": "SPUN: 801 102 205 404 305 00?", "output": "Can you help a new tool?"}
+{"input": "SPUN: 101 203 704 503 804 201 401 00", "output": "I eat the world because knowledge is good."}
+{"input": "SPUN: 801 104 209 804 00?", "output": "Can they see knowledge?"}
+{"input": "SPUN: 103 205 808 503 804 201 401 00", "output": "We help truth because knowledge is good."}
+{"input": "SPUN: 101 203 302 503 804 201 401 00", "output": "I eat food because knowledge is good."}
+{"input": "SPUN: 102 203 704 503 804 201 401 00", "output": "You eat the world because knowledge is good."}
+{"input": "SPUN: 104 202 202 804 00", "output": "They want to want knowledge."}
+{"input": "SPUN: 103 205 806 906 00", "output": "We help hope fast."}
+{"input": "SPUN: 101 202 203 404 305 00", "output": "I want to eat a new tool."}
+{"input": "SPUN: 101 207 808 906 00", "output": "I learn truth fast."}
+{"input": "SPUN: 104 206 304 902 00", "output": "They create work always."}
+{"input": "SPUN: 801 103 200 404 305 00?", "output": "Can we do a new tool?"}
+{"input": "SPUN: 104 209 309 903 00", "output": "They see life never."}
+{"input": "SPUN: 104 208 302 503 804 201 401 00", "output": "They share food because knowledge is good."}
+{"input": "SPUN: 101 200 0.202 405 300 00", "output": "I do not want an old thing."}
+{"input": "SPUN: 101 200 302 906 00", "output": "I do food fast."}
+{"input": "SPUN: 103 205 304 508 00", "output": "We help work together."}
+{"input": "SPUN: 104 202 806 503 804 201 401 00", "output": "They want hope because knowledge is good."}
+{"input": "SPUN: 103 202 207 401 307 00", "output": "We want to learn a good idea."}
+{"input": "SPUN: 801 103 209 306 00?", "output": "Can we see language?"}
+{"input": "SPUN: 102 208 302 503 804 201 401 00", "output": "You share food because knowledge is good."}
+{"input": "SPUN: 801 103 205 404 305 00?", "output": "Can we help a new tool?"}
+{"input": "SPUN: 801 103 206 704 00?", "output": "Can we create the world?"}
+{"input": "SPUN: 104 205 301 902 00", "output": "They help water always."}
+{"input": "SPUN: 101 203 309 00", "output": "I eat life."}
+{"input": "SPUN: 101 200 0.202 304 00", "output": "I do not want work."}
+{"input": "SPUN: 103 207 405 300 508 00", "output": "We learn an old thing together."}
+{"input": "SPUN: 102 206 808 906 00", "output": "You create truth fast."}
+{"input": "SPUN: 104 801 205 804 00", "output": "They can help knowledge."}
+{"input": "SPUN: 103 208 804 00", "output": "We share knowledge."}
+{"input": "SPUN: 102 202 401 307 503 804 201 401 00", "output": "You want a good idea because knowledge is good."}
+{"input": "SPUN: 104 801 209 405 300 00", "output": "They can see an old thing."}
+{"input": "SPUN: 104 208 302 906 00", "output": "They share food fast."}
+{"input": "SPUN: 104 202 203 704 00", "output": "They want to eat the world."}
+{"input": "SPUN: 104 209 304 503 804 201 401 00", "output": "They see work because knowledge is good."}
+{"input": "SPUN: 102 802 205 302 508 00", "output": "You must help food together."}
+{"input": "SPUN: 104 801 207 302 00", "output": "They can learn food."}
+{"input": "SPUN: 103 802 208 804 508 00", "output": "We must share knowledge together."}
+{"input": "SPUN: 101 801 205 304 00", "output": "I can help work."}
+{"input": "SPUN: 102 801 203 306 00", "output": "You can eat language."}
+{"input": "SPUN: 101 202 209 309 00", "output": "I want to see life."}
+{"input": "SPUN: 103 202 207 405 300 00", "output": "We want to learn an old thing."}
+{"input": "SPUN: 102 207 808 00", "output": "You learn truth."}
+{"input": "SPUN: 801 103 203 306 00?", "output": "Can we eat language?"}
+{"input": "SPUN: 102 801 205 808 00", "output": "You can help truth."}

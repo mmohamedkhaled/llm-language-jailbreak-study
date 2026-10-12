@@ -1,0 +1,65 @@
+# ───────────────────────────────────────────────────────────────────
+# SECRETS — never commit
+# ───────────────────────────────────────────────────────────────────
+*_key.txt
+*.key
+.env
+.env.*
+
+# ───────────────────────────────────────────────────────────────────
+# ELICITED MODEL COMPLETIONS — withheld from the public repo.
+# These files contain verbatim model responses to AdvBench prompts
+# (potentially harmful). They are measurement data, adjudicated but
+# NOT distributed. Regenerate locally with the harness (see README /
+# DATA_AND_ETHICS.md). The denylist below backs up the allowlist used
+# to build this repo — do NOT `git add -f` these.
+# ───────────────────────────────────────────────────────────────────
+adv_*.csv
+advb_*.csv
+*.csv
+mm_*.csv
+llama3b_*.csv
+qwen30_*.csv
+results_mistral_*.csv
+recovery_results.csv
+polyglot.csv
+ml_french.csv
+ml_german.csv
+ml_spanish.csv
+dry*.csv
+*_judged.csv
+*_judged_*.csv
+*_rescored*.csv
+*_mt1000.csv
+.v4_*.csv*
+# human-review workbooks (contain completions)
+adjudication/
+adj_*.txt
+*.log
+
+# The single harmful-adjacent file we DO ship is the public benchmark itself:
+!advbench_harmful_behaviors.csv
+
+# ───────────────────────────────────────────────────────────────────
+# Large / regenerable binaries — model weights, venv, caches
+# ───────────────────────────────────────────────────────────────────
+.venv/
+../.venv/
+Mistral-7B-Instruct-v0.3/
+*.safetensors
+*.bin
+*.pt
+*.gguf
+lora_*/tokenizer.json
+__pycache__/
+*.pyc
+.piptmp/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+d_*.csv
+frontierA_*.csv
+frontierB_*.csv
+*_judged_frontier.csv

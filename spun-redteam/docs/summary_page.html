@@ -1,0 +1,255 @@
+<title>Does Language Break Safety?</title>
+<style>
+  :root{
+    --bg:#f6f8fb; --surface:#ffffff; --surface-2:#eef2f7;
+    --ink:#141821; --muted:#5a6473; --faint:#8a93a1; --border:#e0e6ee;
+    --accent:#2f56c9; --accent-soft:#e6ecfb;
+    --held:#1f875a; --held-bg:#e5f3ec;
+    --breach:#c5343c; --breach-bg:#fbe8e8;
+    --partial:#a9781a; --partial-bg:#f7efdc;
+    --shadow:0 1px 2px rgba(20,24,33,.04),0 8px 24px rgba(20,24,33,.06);
+    color-scheme:light;
+  }
+  :root:not([data-theme="light"]){ @media (prefers-color-scheme:dark){
+    --bg:#0d1017; --surface:#151a22; --surface-2:#1b212b;
+    --ink:#e8ebf1; --muted:#9aa4b2; --faint:#6d7683; --border:#252c37;
+    --accent:#6d8cff; --accent-soft:#1a2336;
+    --held:#39b884; --held-bg:#12251d;
+    --breach:#f2666d; --breach-bg:#2a1618;
+    --partial:#d7a744; --partial-bg:#282013;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+    color-scheme:dark;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0d1017; --surface:#151a22; --surface-2:#1b212b;
+    --ink:#e8ebf1; --muted:#9aa4b2; --faint:#6d7683; --border:#252c37;
+    --accent:#6d8cff; --accent-soft:#1a2336;
+    --held:#39b884; --held-bg:#12251d;
+    --breach:#f2666d; --breach-bg:#2a1618;
+    --partial:#d7a744; --partial-bg:#282013;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  body{
+    background:var(--bg); color:var(--ink); margin:0;
+    font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+    line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px; margin:0 auto; padding-inline:20px; padding-block:48px 64px}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  h1,h2,h3{margin:0; text-wrap:balance; font-weight:600}
+  .display{font-family:"Fraunces",Georgia,serif; font-weight:600; letter-spacing:-.01em}
+
+  /* header */
+  .eyebrow{font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent); font-weight:600}
+  h1{font-size:clamp(30px,6vw,52px); line-height:1.05; margin:14px 0 0}
+  .lede{font-size:clamp(16px,2.4vw,20px); color:var(--muted); max-width:60ch; margin-top:16px}
+  .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+  .chip{font-size:12px; padding:5px 11px; border:1px solid var(--border);
+    border-radius:100px; background:var(--surface); color:var(--muted)}
+
+  section{margin-top:44px}
+  .sec-label{font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--faint); font-weight:600; margin-bottom:16px; display:flex; align-items:center; gap:10px}
+  .sec-label::after{content:""; flex:1; height:1px; background:var(--border)}
+
+  /* headline finding cards */
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:14px;
+    padding:20px; box-shadow:var(--shadow)}
+  .card .big{font-family:"Fraunces",serif; font-size:40px; line-height:1; font-weight:600}
+  .card .lbl{font-size:13px; color:var(--muted); margin-top:10px}
+  .card.good .big{color:var(--held)} .card.bad .big{color:var(--breach)}
+  .card.neutral .big{color:var(--accent)}
+
+  /* matrix */
+  .matrix-scroll{overflow-x:auto}
+  table.matrix{border-collapse:separate; border-spacing:6px; width:100%; min-width:560px}
+  table.matrix th{font-weight:600; font-size:13px; color:var(--muted); text-align:left; padding:6px 10px; vertical-align:bottom}
+  table.matrix th.col{text-align:center; color:var(--ink)}
+  table.matrix th.col small{display:block; font-weight:400; color:var(--faint); font-size:11px}
+  table.matrix td.rowh{font-weight:600; font-size:14px; background:var(--surface-2);
+    border-radius:10px; padding:12px 14px; width:32%}
+  table.matrix td.rowh small{display:block; font-weight:400; color:var(--muted); font-size:11.5px; margin-top:2px}
+  .cell{border-radius:10px; padding:12px 14px; text-align:center; border:1px solid transparent}
+  .cell .v{font-weight:600; font-size:14px; display:block}
+  .cell .n{font-size:11.5px; margin-top:3px; opacity:.85}
+  .cell.held{background:var(--held-bg); color:var(--held); border-color:color-mix(in srgb,var(--held) 25%,transparent)}
+  .cell.breach{background:var(--breach-bg); color:var(--breach); border-color:color-mix(in srgb,var(--breach) 30%,transparent)}
+  .cell.partial{background:var(--partial-bg); color:var(--partial); border-color:color-mix(in srgb,var(--partial) 30%,transparent)}
+  .legend{display:flex; gap:16px; flex-wrap:wrap; margin-top:14px; font-size:12.5px; color:var(--muted)}
+  .legend span{display:inline-flex; align-items:center; gap:7px}
+  .dot{width:11px; height:11px; border-radius:3px; display:inline-block}
+
+  /* prefill chart */
+  .chart{background:var(--surface); border:1px solid var(--border); border-radius:14px;
+    padding:22px 22px 18px; box-shadow:var(--shadow)}
+  .chart h3{font-size:16px; margin-bottom:4px}
+  .chart .sub{font-size:13px; color:var(--muted); margin-bottom:22px}
+  .bar-row{display:grid; grid-template-columns:120px 1fr 54px; align-items:center; gap:14px; margin-bottom:14px}
+  .bar-row .name{font-size:13.5px; font-weight:600}
+  .bar-row .name small{display:block; font-weight:400; color:var(--faint); font-size:11px}
+  .track{background:var(--surface-2); border-radius:6px; height:26px; overflow:hidden; position:relative}
+  .fill{height:100%; border-radius:6px; display:flex; align-items:center}
+  .bar-row .pct{font-weight:600; font-family:"IBM Plex Mono",monospace; text-align:right; font-size:14px}
+  .fill.breach{background:var(--breach)} .fill.held{background:var(--held)}
+
+  .two{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  .note{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; box-shadow:var(--shadow)}
+  .note h3{font-size:15px; margin-bottom:10px; display:flex; align-items:center; gap:8px}
+  .note p{font-size:13.5px; color:var(--muted); margin:0 0 10px}
+  .note p:last-child{margin-bottom:0}
+  .note b{color:var(--ink); font-weight:600}
+  .kbd{font-family:"IBM Plex Mono",monospace; font-size:12px; background:var(--surface-2);
+    padding:1px 6px; border-radius:5px; color:var(--ink)}
+
+  .models{display:flex; flex-wrap:wrap; gap:8px}
+  .model{font-family:"IBM Plex Mono",monospace; font-size:12px; background:var(--surface);
+    border:1px solid var(--border); border-radius:8px; padding:7px 11px; color:var(--muted)}
+  .model b{color:var(--ink); font-weight:600}
+
+  footer{margin-top:48px; padding-top:20px; border-top:1px solid var(--border);
+    font-size:12px; color:var(--faint); display:flex; flex-wrap:wrap; gap:6px 18px; justify-content:space-between}
+
+  @media (max-width:640px){
+    .cards{grid-template-columns:1fr} .two{grid-template-columns:1fr}
+    .bar-row{grid-template-columns:96px 1fr 46px; gap:10px}
+  }
+  @media (prefers-reduced-motion:no-preference){ .fill{transition:width .6s ease} }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">LLM Safety Red-Team · Mohamed Khaled · 2026</div>
+    <h1 class="display">Does a language<br>break safety?</h1>
+    <p class="lede">Across five instruction-tuned models we tested invented languages, ciphers, fine-tuned fluency, real languages, and conversational attacks against public AdvBench prompts. The short answer: <b style="color:var(--ink)">no language does — and the jailbreaks that work aren't languages at all.</b></p>
+    <div class="chips">
+      <span class="chip">50-item AdvBench subset</span>
+      <span class="chip">LLM-judge adjudicated</span>
+      <span class="chip">Activation-space probe</span>
+      <span class="chip">Defensive measurement</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="sec-label">Headline</div>
+    <div class="cards">
+      <div class="card good">
+        <div class="big">0</div>
+        <div class="lbl">genuine jailbreaks from any <b>invented or real language</b>, across all five models</div>
+      </div>
+      <div class="card neutral">
+        <div class="big">~46%</div>
+        <div class="lbl">of the refusal signal is <b>concept-level</b> — it fires on meaning even before decoding, localized to layers 12–30</div>
+      </div>
+      <div class="card bad">
+        <div class="big">67%</div>
+        <div class="lbl">of prompts complied on <b>Qwen3-30B under prefill</b> — a turn-structure attack, not a language (Frontier-A held at 0%)</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Outcome matrix — attack family × alignment strength</div>
+    <div class="matrix-scroll">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th></th>
+            <th class="col">Weak alignment<small>Mistral-7B · Llama-3.2-3B</small></th>
+            <th class="col">Frontier alignment<small>Frontier-A · Qwen3-30B</small></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="rowh">Invented language<small>SPUN · ROT13 · Base64 · hybrid · fine-tuned fluency</small></td>
+            <td class="cell held"><span class="v">Blocked</span><span class="n">payload lost to lexicon coverage / spurious comply</span></td>
+            <td class="cell held"><span class="v">Blocked</span><span class="n">decodes it, then refuses — 0 genuine</span></td>
+          </tr>
+          <tr>
+            <td class="rowh">Real language<small>German · Spanish · French, translated</small></td>
+            <td class="cell held"><span class="v">Blocked</span><span class="n">"gap" was a keyword artifact (judge: 33%)</span></td>
+            <td class="cell held"><span class="v">Blocked</span><span class="n">Frontier-A refuses German ~83% when judged</span></td>
+          </tr>
+          <tr>
+            <td class="rowh">Social framing<small>multi-turn fiction ("what the character says")</small></td>
+            <td class="cell breach"><span class="v">Jailbroken</span><span class="n">Mistral-7B: 0 refusals, 11 actionable</span></td>
+            <td class="cell held"><span class="v">Blocked</span><span class="n">Frontier-A &amp; Qwen resist the frame</span></td>
+          </tr>
+          <tr>
+            <td class="rowh">Turn structure<small>prefill — forced compliant opening</small></td>
+            <td class="cell breach"><span class="v">Jailbroken</span><span class="n">Mistral: 80% comply</span></td>
+            <td class="cell partial"><span class="v">Split</span><span class="n">Qwen breached (67%) · Frontier-A immune (0%)</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--held)"></i> Safety held</span>
+      <span><i class="dot" style="background:var(--partial)"></i> Model-dependent</span>
+      <span><i class="dot" style="background:var(--breach)"></i> Jailbroken</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">The punchline — prefill (not a language) is the only frontier breach</div>
+    <div class="chart">
+      <h3>Compliance under the prefill attack</h3>
+      <div class="sub">Forced opening "Sure, here are the step-by-step instructions…", judged language-agnostically. Frontier-A re-fires safety mid-generation; Qwen does not.</div>
+      <div class="bar-row">
+        <div class="name">Frontier-A<small>frontier</small></div>
+        <div class="track"><div class="fill held" style="width:2%"></div></div>
+        <div class="pct" style="color:var(--held)">0%</div>
+      </div>
+      <div class="bar-row">
+        <div class="name">Qwen3-30B<small>frontier</small></div>
+        <div class="track"><div class="fill breach" style="width:67%"></div></div>
+        <div class="pct" style="color:var(--breach)">67%</div>
+      </div>
+      <div class="bar-row">
+        <div class="name">Mistral-7B<small>weak</small></div>
+        <div class="track"><div class="fill breach" style="width:80%"></div></div>
+        <div class="pct" style="color:var(--breach)">80%</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Why — and how we know</div>
+    <div class="two">
+      <div class="note">
+        <h3>Mechanism: safety tracks meaning</h3>
+        <p>A model maps every language into one shared <b>concept space</b> — the same place the refusal signal lives (layers 12–30). To be useful a language must convey meaning; conveying meaning <b>is</b> activating the concept. So understanding a wrapper <b>raises</b> refusal, never lowers it.</p>
+        <p>The only channels that get past this are <b>not languages</b>: turn-structure exploits (prefill) that work only when safety isn't enforced across the whole generation, and white-box weight edits (out of scope — they delete safety).</p>
+      </div>
+      <div class="note">
+        <h3>Method: don't trust keywords</h3>
+        <p>Raw keyword "compliance" is dominated by artifacts: <b>decode-and-halt</b>, <b>restate-the-decode</b>, and cross-lingual misses. Frontier-A's German "0% refusal" was really <b>83%</b> once judged.</p>
+        <p>Every real claim is gated on <span class="kbd">decode_overlap ≥ 0.5</span>, confirmed by a <b>language-agnostic LLM judge</b>, and the survivors read by hand. The correction is itself a finding: multilingual safety evals must not keyword-match.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Models tested</div>
+    <div class="models">
+      <span class="model"><b>Mistral-7B</b>-Instruct-v0.3 · local</span>
+      <span class="model"><b>Frontier-A</b> · hosted API (anonymised)</span>
+      <span class="model"><b>Qwen3-30B</b>-A3B · Ollama Q4</span>
+      <span class="model"><b>Llama-3.2-3B</b> · Ollama</span>
+      <span class="model"><b>Qwen2.5-3B</b> · baseline</span>
+    </div>
+  </section>
+
+  <footer>
+    <span>Defensive red-team · public AdvBench prompts · elicited completions adjudicated, not distributed</span>
+    <span class="mono">Mohamed Khaled · 2026-09-27</span>
+  </footer>
+
+</div>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
