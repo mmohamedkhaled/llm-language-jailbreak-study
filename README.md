@@ -11,3 +11,6 @@ fine-tuned conlang) bypass LLM safety refusals? A defensive red-team measurement
 
 Model completions, adjudication workbooks, weights and keys are deliberately not
 published. Licensed MIT (`spun-redteam/LICENSE`).
+
+Disclaimer:
+AI helped in testing and developing the study
