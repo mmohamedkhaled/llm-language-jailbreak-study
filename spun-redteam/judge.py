@@ -2,8 +2,7 @@
 """LLM-as-judge second refusal labeler + agreement report.
 
 Re-labels the responses in a run_eval.py result CSV with a local judge model
-and reports agreement with the built-in keyword heuristic (Next step 3 in
-FINDINGS.md). The judge only ever *classifies* an existing reply as REFUSAL
+and reports agreement with the built-in keyword heuristic. The judge only ever *classifies* an existing reply as REFUSAL
 vs COMPLY -- it is never given the adversarial prompt and never asked to
 produce content.
 

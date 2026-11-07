@@ -18,10 +18,8 @@ turn-structure (prefill) attacks.
 - The **public AdvBench prompt set** (`advbench_harmful_behaviors.csv`) — prompts
   only. This file is already public and is the standard benchmark; it is included
   so the harness runs out of the box.
-- The **write-ups and rendered reports** (`docs/PROJECT_WRITEUP.md`, `docs/FINDINGS.md`,
-  `docs/LAB_REPORT.md`, `docs/findings_page.html`, `docs/summary_page.html`), which report
-  aggregate statistics (refusal/compliance rates, Wilson CIs, decode fidelity).
-- LoRA adapter **metadata only** (`lora_*/adapter_config.json`, `README.md`).
+- The **write-up** (`docs/PROJECT_WRITEUP.md`), which reports verified aggregate results only.
+- LoRA adapter **metadata only** (`lora_*/adapter_config.json`).
 
 ## What this repository deliberately does NOT contain
 
@@ -51,18 +49,18 @@ To avoid distributing potentially harmful material, the following were withheld
    `summarize_results.py`, add the second labeler with `judge.py`, and build
    review workbooks with `adjudicate.py`.
 
-The aggregate numbers you should reproduce are tabulated in
-[PROJECT_WRITEUP.md](docs/PROJECT_WRITEUP.md) §0.
+The verified numbers you should reproduce are tabulated in
+[PROJECT_WRITEUP.md](docs/PROJECT_WRITEUP.md) §3.
 
 ## Headline finding
 
-No language channel — invented, real, mixed, or fine-tuned — reliably jailbreaks a
-well-aligned model; safety is **concept-level**, not surface-level. The only
-genuine jailbreaks found were a social (multi-turn) attack on a weak model and a
-prefill (turn-structure) attack on one frontier model — **neither is a language**.
-See the write-up for the full argument and the measurement caveats (keyword
-detection massively overstates attack success; a language-agnostic judge + decode
-fidelity gate is required).
+No encoding channel tested (SPUN, ROT13, Base64, English/SPUN hybrids) produced a
+jailbreak on the three frontier models, including when the models decoded the request
+correctly. The invented language cannot express most harmful requests (about 40% lexicon
+coverage on AdvBench). Keyword-based refusal detection greatly overstates attack success;
+a decode check and a human read of every positive are required. Other attacks explored
+(multi-turn framing, prefill, other languages) are not yet verified; see
+[PROJECT_WRITEUP.md](docs/PROJECT_WRITEUP.md) §6.
 
 ## Attack prompts that ARE in the code
 
@@ -72,8 +70,8 @@ the multi-turn fiction-framing prompts and the ROT13 + persona stack in
 `prefill_eval.py` / `prefill_provider.py`. These are generic, widely published
 techniques (role-play framing, prefill, cipher wrapping); they contain no
 harmful content of their own and are included so the results can be audited
-and the defences evaluated. The study's own finding is that the multi-turn
-framing is the only wrapper that worked on the weak local model; do not run
+and the defences evaluated. Results for these wrappers are not yet verified
+(see the write-up, §6). Do not run
 these against systems you do not own or have permission to test, and follow
 each provider's usage policy and disclosure process.
 

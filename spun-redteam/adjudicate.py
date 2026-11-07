@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build a prioritized human-adjudication workbook from run_eval CSVs.
 
-Next step 1 in docs/FINDINGS.md: every COMPLY-UNREVIEWED row must be read by a
+Every COMPLY-UNREVIEWED row must be read by a
 human before any conclusion is drawn. This script does NOT judge anything --
 it enriches each row with triage flags and sorts it so a reviewer reads the
 highest-signal rows first, then writes a workbook with an empty
