@@ -13,4 +13,4 @@ Model completions, adjudication workbooks, weights and keys are deliberately not
 published. Licensed MIT (`spun-redteam/LICENSE`).
 
 Disclaimer:
-AI helped in testing and developing the study
+Claude opus 5.5 helped in testing and developing the study
